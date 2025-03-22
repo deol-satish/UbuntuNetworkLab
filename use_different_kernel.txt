@@ -1,0 +1,46 @@
+To switch to the kernel version `5.15.72-56eae305c-prague-91` on your Ubuntu system, you can follow these steps:
+
+### 1. **Reboot your system:**
+   First, reboot your system and choose the kernel version `5.15.72-56eae305c-prague-91` from the boot menu.
+
+   - Reboot your machine.
+   - During the boot process, hold down the **Shift** key to bring up the GRUB menu (if it doesn’t appear automatically).
+   - From the GRUB menu, select **Advanced options for Ubuntu**.
+   - Choose the kernel version `5.15.72-56eae305c-prague-91` and press Enter.
+
+### 2. **Set the default kernel (optional)**:
+   If you want to make `5.15.72-56eae305c-prague-91` your default kernel, you can update GRUB settings:
+
+   1. **Edit GRUB**:
+      Run the following command to open the GRUB configuration file:
+      ```bash
+      sudo nano /etc/default/grub
+      ```
+
+   2. **Modify GRUB settings**:
+      Look for the line `GRUB_DEFAULT=0`. This refers to the default boot entry. To set the default kernel, you can set this to the appropriate entry number or use the exact kernel name. 
+   
+      For example, if you know the exact kernel version, you can set it like this:
+      ```bash
+      GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux 5.15.72-56eae305c-prague-91"
+      ```
+
+   3. **Update GRUB**:
+      After making changes, save the file and update GRUB:
+      ```bash
+      sudo update-grub
+      ```
+
+   4. **Reboot**:
+      Finally, reboot the system:
+      ```bash
+      sudo reboot
+      ```
+
+After rebooting, your system should start with the kernel `5.15.72-56eae305c-prague-91` by default. You can confirm this by running:
+```bash
+uname -r
+```
+It should display `5.15.72-56eae305c-prague-91`.
+
+Let me know if you run into any issues!

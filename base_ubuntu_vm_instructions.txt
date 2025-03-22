@@ -1,0 +1,48 @@
+Install vscode
+Install chrome
+enable ssh connection to VM
+Install iperf3
+add user account ubuntu to sudoers
+To enable a user account to authenticate as `root` using its own password on an Ubuntu VM, you can modify the configuration of `sudo` and ensure the user has the proper permissions.
+
+Here are the steps to achieve this:
+
+1. **Log in as the root user or a user with `sudo` privileges:**
+
+   If you're not logged in as root, use a user that can use `sudo` to gain root access.
+
+2. **Edit the sudoers file:**
+
+   To modify the sudoers file, we will use `visudo`, which is the recommended way because it ensures syntax correctness.
+
+   Run:
+   ```bash
+   sudo visudo
+   ```
+
+   This will open the sudoers file in your default editor.
+
+3. **Allow user to use sudo without a password:**
+
+   To allow a specific user to execute `sudo` commands without a password prompt (which includes root-level commands), add the following line at the end of the file:
+
+   ```bash
+   username ALL=(ALL) NOPASSWD: ALL
+   ```
+
+   Replace `username` with the actual username you want to enable.
+
+4. **Save and exit:**
+
+   If you're using `nano`, press `Ctrl + X` to exit, then press `Y` to confirm changes, and `Enter` to save the file.
+
+5. **Test the changes:**
+
+   Now, try using `sudo` to run a root-level command. You should be able to run the command without entering a password.
+
+   Example:
+   ```bash
+   sudo ls /root
+   ```
+
+If you want the user to be able to use `sudo` with their own password (instead of no password), but for root authentication, this configuration is already default in most setups, as the user will be prompted for their password when using `sudo`.

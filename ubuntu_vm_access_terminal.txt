@@ -1,0 +1,50 @@
+To access the Ubuntu VM terminal from a Windows host machine, you can use several methods, but the most common and simple way is by using **SSH (Secure Shell)**. Here's a step-by-step guide to help you set it up:
+
+### 1. **Ensure SSH is Installed on Ubuntu VM**
+   - First, check if SSH is installed on your Ubuntu VM. You can do this by opening a terminal in your Ubuntu VM and running:
+     ```bash
+     sudo apt update
+     sudo apt install openssh-server
+     ```
+   - After installing, you can start the SSH service with:
+     ```bash
+     sudo systemctl start ssh
+     sudo systemctl enable ssh
+     ```
+
+### 2. **Find the Ubuntu VM's IP Address**
+   - You need the IP address of your Ubuntu VM. You can find it by running the following command in the Ubuntu terminal:
+     ```bash
+     ip a
+     ```
+   - Look for the `inet` line under the network interface (e.g., `eth0` or `ens33`), which will show the IP address (e.g., `192.168.x.x`).
+
+### 3. **Allow SSH Through Ubuntu VM's Firewall (if enabled)**
+   - If you have a firewall enabled on your Ubuntu VM, make sure to allow SSH traffic:
+     ```bash
+     sudo ufw allow ssh
+     sudo ufw enable
+     ```
+
+### 4. **Install an SSH Client on Windows (if not already installed)**
+   - **Option 1: Use Windows PowerShell or Command Prompt (Built-in SSH Client)**
+     - Windows 10 and later come with an SSH client pre-installed. You can use it directly in **PowerShell** or **Command Prompt**.
+     - Open **PowerShell** or **Command Prompt** on your Windows machine and run:
+       ```powershell
+       ssh username@<Ubuntu_VM_IP>
+       ```
+     - Replace `username` with your Ubuntu username and `<Ubuntu_VM_IP>` with the IP address of your Ubuntu VM.
+
+   - **Option 2: Use PuTTY (Third-Party Application)**
+     - Download and install **[PuTTY](https://www.putty.org/)**, a popular SSH client for Windows.
+     - Open PuTTY, enter the **Ubuntu VM IP address** in the **Host Name** field, set the **Port** to `22` (default for SSH), and choose **SSH** as the connection type.
+     - Click **Open** and, if prompted, accept the security warning and enter your Ubuntu login credentials.
+
+### 5. **Access the Ubuntu VM Terminal**
+   - Once connected via SSH, you'll be logged into the Ubuntu VM's terminal from your Windows machine, and you can execute commands as if you were directly working on the Ubuntu system.
+
+### Troubleshooting Tips:
+- **Network Issues**: Ensure that your Ubuntu VM and Windows machine are on the same network if you're using a local IP address.
+- **Firewall**: If you have any firewalls between the Windows machine and the Ubuntu VM, ensure that port 22 (for SSH) is open.
+
+Let me know if you run into any issues!

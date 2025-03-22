@@ -1,0 +1,21 @@
+# To connect to ubuntu laptop given ip address
+ssh sit@192.168.88.3
+
+# Do this on host machine to copy generated key into other ubuntu laptop
+ssh-keygen -t rsa
+ssh-keygen -t rsa -b 4096
+ssh-copy-id sit@10.136.23.63
+
+# On Ubuntu laptop
+sudo apt update
+sudo apt upgrade
+sudo apt install openssh-server -y
+sudo systemctl enable --now ssh
+sudo systemctl status ssh
+
+Allow SSH in Firewall (if applicable)
+sudo ufw allow ssh
+
+
+sudo modprobe sch_dualpi2
+sudo modprobe tcp_prague
