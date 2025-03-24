@@ -9,12 +9,19 @@ ssh-copy-id sit@10.136.23.63
 # On Ubuntu laptop
 sudo apt update
 sudo apt upgrade
+sudo apt install iperf3
+sudo apt install git
+
+
 sudo apt install openssh-server -y
 sudo systemctl enable --now ssh
 sudo systemctl status ssh
 
 Allow SSH in Firewall (if applicable)
 sudo ufw allow ssh
+
+# To log into ubuntu VM
+ssh -p 2222 ubuntu@192.168.56.1
 
 
 sudo modprobe sch_dualpi2
