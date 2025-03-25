@@ -20,6 +20,35 @@ sudo systemctl status ssh
 Allow SSH in Firewall (if applicable)
 sudo ufw allow ssh
 
+
+Allow ssh-root access
+### 1. **Edit the SSH Configuration File:**
+   - Open the SSH configuration file using a text editor. For example:
+     ```bash
+     sudo nano /etc/ssh/sshd_config
+     ```
+
+### 2. **Modify the `PermitRootLogin` Directive:**
+   - Look for the line that says `PermitRootLogin` and change it to:
+     ```bash
+     PermitRootLogin yes
+     ```
+   - If the line is commented out (with a `#` at the beginning), remove the `#` and modify the line.
+   
+   **Alternatively,** if you prefer to allow root login only with a specific key (which is more secure), you can set:
+   ```bash
+   PermitRootLogin prohibit-password
+   ```
+
+### 3. **Restart the SSH Service:**
+   - After saving the file, restart the SSH service to apply the changes:
+     ```bash
+     sudo systemctl restart sshd
+     ```
+   ```
+
+
+
 # To log into ubuntu VM
 ssh -p 2222 ubuntu@192.168.56.1
 
