@@ -1,0 +1,30 @@
+------------------------------------------------------------------------------------------
+### If problems with connection with itself means its ethernet port is not working
+
+For Client 1
+sudo ip addr add 192.168.1.2/24 dev ens37
+sudo ip link set ens37 up
+
+For Client 2
+sudo ip addr add 192.168.2.2/24 dev ens37
+sudo ip link set ens37 up
+
+For Server
+sudo ip addr add 192.168.3.2/24 dev ens37
+sudo ip link set ens37 up
+
+
+For Router
+sudo ip addr add 192.168.1.1/24 dev ens37
+sudo ip link set ens37 up
+
+sudo ip addr add 192.168.2.1/24 dev ens37
+sudo ip link set ens38 up
+
+sudo ip addr add 192.168.3.1/24 dev ens37
+sudo ip link set ens39 up
+------------------------------------------------------------------------------------------
+
+#To add dualpi2 as queue in ubuntu Router
+sudo modprobe sch_dualpi2
+sudo tc qdisc add dev ens37 root handle 1: dualpi2

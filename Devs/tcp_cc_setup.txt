@@ -1,0 +1,15 @@
+------------------------------------------------------------------------------------------
+#Check available congestion control 
+sysctl net.ipv4.tcp_available_congestion_control
+Alternatively, you can check the available modules in /proc:
+cat /proc/sys/net/ipv4/tcp_available_congestion_control
+------------------------------------------------------------------------------------------
+# Check current TCP cc
+sysctl net.ipv4.tcp_congestion_control
+------------------------------------------------------------------------------------------
+# Use this to set tcp_congestion_control as cubic
+sudo sysctl -w net.ipv4.tcp_congestion_control=cubic
+------------------------------------------------------------------------------------------
+# Use this to set tcp_congestion_control as reno
+sudo sysctl -w net.ipv4.tcp_congestion_control=reno
+------------------------------------------------------------------------------------------

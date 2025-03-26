@@ -1,0 +1,23 @@
+sudo apt upgrade
+sudo apt install iperf3 -y
+sudo apt install git -y
+
+sudo apt install openssh-server -y
+sudo systemctl enable --now ssh
+sudo systemctl status ssh
+
+
+sudo nano /etc/ssh/sshd_config
+**Modify the `PermitRootLogin` Directive:**
+   - Look for the line that says `PermitRootLogin` and change it to:
+     ```bash
+     PermitRootLogin yes
+     ```
+
+sudo systemctl restart sshd
+
+Allow SSH in Firewall (if applicable)
+sudo ufw allow ssh
+
+#To set root password
+sudo passwd root
