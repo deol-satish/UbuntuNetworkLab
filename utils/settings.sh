@@ -19,7 +19,4 @@ sshkeypath="$HOME/.ssh/id_rsa"
 tcp1="prague"
 tcp2="cubic"
 
-duration=300
-
-# Create a variable for the directory name
-save_dir="./results"
+duration=30
