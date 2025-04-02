@@ -1,0 +1,4 @@
+------------------------------------------------------------------------------------------
+For Ubuntu VMware Network Editor to work - shutdown -r now 
+-> then copy paste network commmands right after the start
+------------------------------------------------------------------------------------------
