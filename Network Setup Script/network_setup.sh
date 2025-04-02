@@ -19,6 +19,8 @@ fi
 
 echo "Commands to enable IP forwarding, configure interfaces, and set up NAT"
 
+# Maybe do not use ip link set down
+
 router_setup_commands="
 sudo ip link set ens37 down;
 sudo ip link set ens38 down;
