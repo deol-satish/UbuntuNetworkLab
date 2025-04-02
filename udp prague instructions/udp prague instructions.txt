@@ -1,0 +1,92 @@
+It looks like there is a typo in the receiver's IP address. It should be `192.168.1.2` instead of `1922.168.1.2`. Assuming the correct setup is:  
+
+- **Sender VM**: `192.168.1.1`  
+- **Receiver VM**: `192.168.1.2`  
+
+### **Steps to Run UDP Prague on Two Ubuntu VMs**
+
+---
+
+### **1. Check Network Connectivity**
+Before running UDP Prague, make sure the VMs can communicate:  
+
+On the **Sender VM (`192.168.1.1`)**, ping the receiver:
+```bash
+ping 192.168.1.2
+```
+On the **Receiver VM (`192.168.1.2`)**, ping the sender:
+```bash
+ping 192.168.1.1
+```
+If the pings fail, ensure both VMs are on the **same network** in VMware.  
+
+- Use **Bridged mode** if you want them on the same LAN.
+- Use **Host-Only mode** if you want them to communicate internally.
+
+---
+
+### **2. Install Dependencies**
+On **both** VMs, update and install essential tools:
+```bash
+sudo apt update && sudo apt install build-essential net-tools
+```
+
+---
+
+### **3. Compile UDP Prague**
+On **both VMs**, navigate to the `udp_prague-main` directory and compile:
+```bash
+make
+```
+This should generate two executables:
+- **`udp_prague_sender`**
+- **`udp_prague_receiver`**
+
+---
+
+### **4. Start the Receiver on VM 2 (`192.168.1.2`)**
+On **VM 2 (Receiver)**, run:
+```bash
+./udp_prague_receiver
+```
+This starts a UDP server, waiting for packets.
+
+---
+
+### **5. Start the Sender on VM 1 (`192.168.1.1`)**
+On **VM 1 (Sender)**, send packets to the receiver:
+```bash
+./udp_prague_sender 192.168.1.2
+```
+Now, the sender should send UDP packets to `192.168.1.2`.
+
+---
+
+### **6. Verify the Connection**
+Check active UDP connections:
+```bash
+netstat -uap
+```
+You should see `udp_prague_sender` and `udp_prague_receiver` in the list.
+
+---
+
+### **7. Enable ECN (Optional)**
+To fully test congestion control, enable **ECN** in Linux:
+```bash
+sysctl -w net.ipv4.tcp_ecn=1
+```
+
+---
+**Sender exits immediately?**  
+Try running it with `strace` to debug:
+```bash
+strace ./udp_prague_sender 192.168.1.2
+```
+
+---
+
+
+
+/udp_prague_sender -a 192.168.1.2 -p 8080 -c -b 10000000 -m 1400 -v
+./udp_prague_receiver

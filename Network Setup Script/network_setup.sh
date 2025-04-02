@@ -20,6 +20,9 @@ fi
 echo "Commands to enable IP forwarding, configure interfaces, and set up NAT"
 
 router_setup_commands="
+sudo ip link set ens37 down;
+sudo ip link set ens38 down;
+sudo ip link set ens39 down;
 echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf;
 sudo sysctl -p;
 sudo ip addr add 192.168.1.1/24 dev ens37;
@@ -31,12 +34,14 @@ sudo ip link set ens39 up;
 "
 
 client1_setup_commands="
+sudo ip link set ens37 down;
 sudo ip addr add 192.168.1.2/24 dev ens37;
 sudo ip route add default via 192.168.1.1;
 sudo ip link set ens37 up;
 "
 
 client2_setup_commands="
+sudo ip link set ens37 down;
 sudo ip addr add 192.168.2.2/24 dev ens37;
 sudo ip route add default via 192.168.2.1;
 sudo ip link set ens37 up;
@@ -44,6 +49,7 @@ sudo ip link set ens37 up;
 
 
 server_setup_commands="
+sudo ip link set ens37 down;
 sudo ip addr add 192.168.3.2/24 dev ens37;
 sudo ip route add 192.168.1.0/24 via 192.168.3.1;
 sudo ip route add 192.168.2.0/24 via 192.168.3.1;
