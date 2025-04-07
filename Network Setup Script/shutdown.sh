@@ -4,12 +4,12 @@
 set -x
 
 # Source the settings file
-if [ ! -f ./utils/settings.sh ]; then
+if [ ! -f ../utils/settings.sh ]; then
     echo "Error: settings.sh file not found"
     exit 1
 fi
 
-source ./utils/settings.sh
+source ../utils/settings.sh
 
 
 ssh root@"$router_ipaddr" "$sudo shutdown -h now" &

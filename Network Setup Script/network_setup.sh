@@ -44,8 +44,8 @@ sudo ip link set ens37 up;
 
 client2_setup_commands="
 sudo ip link set ens37 down;
-sudo ip addr add 192.168.2.2/24 dev ens37;
-sudo ip route add default via 192.168.2.1;
+sudo ip addr add 192.168.1.3/24 dev ens37;
+sudo ip route add default via 192.168.1.1;
 sudo ip link set ens37 up;
 "
 
@@ -54,7 +54,6 @@ server_setup_commands="
 sudo ip link set ens37 down;
 sudo ip addr add 192.168.3.2/24 dev ens37;
 sudo ip route add 192.168.1.0/24 via 192.168.3.1;
-sudo ip route add 192.168.2.0/24 via 192.168.3.1;
 sudo ip link set ens37 up;
 "
 
