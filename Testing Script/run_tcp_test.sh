@@ -32,8 +32,8 @@ ssh root@"$client2_ipaddr" "sudo sysctl -w net.ipv4.tcp_congestion_control=$tcp2
 echo "Starting iperf3 server instances"
 # ssh root@"$server_ipaddr" "nohup iperf3 -s -p 5101 > /dev/null 2>&1 &"
 # ssh root@"$server_ipaddr" "nohup iperf3 -s -p 5102 > /dev/null 2>&1 &"
-ssh root@"$server_ipaddr" "cd /home/ubuntu/; nohup iperf3 -s -p 5101 > iperf3_server_${tcp1}_${testname}.json 2>&1 &"
-ssh root@"$server_ipaddr" "cd /home/ubuntu/; nohup iperf3 -s -p 5102 > iperf3_server_${tcp2}_${testname}.json 2>&1 &"
+ssh root@"$server_ipaddr" "cd /home/ubuntu/; nohup iperf3 -s -p 5101 -J > iperf3_server_${tcp1}_${testname}.json 2>&1 &"
+ssh root@"$server_ipaddr" "cd /home/ubuntu/; nohup iperf3 -s -p 5102 -J > iperf3_server_${tcp2}_${testname}.json 2>&1 &"
 
 echo "Start tcpdump on the server to capture traffic"
 ssh root@"$server_ipaddr" "sudo nohup tcpdump -i ens37 -w /home/ubuntu/pcap_server_${testname}.pcap > /dev/null 2>&1 &"
