@@ -57,6 +57,11 @@ sudo ip route add 192.168.1.0/24 via 192.168.3.1;
 sudo ip link set ens37 up;
 "
 
+sudo ip link set ens37 down;
+sudo ip addr add 192.168.2.2/24 dev ens37;
+sudo ip route add 192.168.1.0/24 via 192.168.2.1;
+sudo ip link set ens37 up;
+
 
 # Execute the commands remotely via SSH
 

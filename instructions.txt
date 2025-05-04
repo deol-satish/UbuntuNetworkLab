@@ -24,3 +24,10 @@ sudo passwd root
 
 iperf3 -c 192.168.3.2 -t 30 -p 5101 -C cubic
 iperf3 -c 192.168.3.2 -t 30 -p 5102 -C reno
+
+
+
+client1:
+client2:
+router:
+server:192.168.11.137
