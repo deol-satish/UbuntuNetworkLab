@@ -1,0 +1,32 @@
+cat /etc/netplan/01-netcfg.yaml
+sudo mkdir -p /etc/cloud/cloud.cfg.d
+echo "network: {config: disabled}" | sudo tee /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+sudo rm /etc/netplan/50-cloud-init.yaml
+sudo nano /etc/netplan/01-netcfg.yaml
+sudo netplan apply
+
+shutdown -r now
+
+
+
+Router:::::
+This allows the router to forward packets between its two interfaces.
+sudo sysctl -w net.ipv4.ip_forward=1
+
+To make it persistent:
+echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
+
+Then apply:
+sudo sysctl -p
+
+
+
+
+sudo hostnamectl set-hostname ubsrouter
+sudo hostnamectl set-hostname ubsclient1
+sudo hostnamectl set-hostname ubsclient2
+sudo hostnamectl set-hostname ubsserver
+
+
+may want ot use  - 192.168.0.10/16 
+to include 192.168.0.0 - 192.168.255.255, covering all 192.168.x.x addresses.

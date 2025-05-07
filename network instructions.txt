@@ -163,6 +163,8 @@ sudo ip route add 192.168.1.0/24 via 192.168.2.1 dev ens38
 
 ---
 
+
+
 ## 📌 To make them **persistent after reboot**, you can:
 
 1. Create a file like `/etc/networkd-dispatcher/routable.d/10-add-static-routes.sh`
@@ -197,3 +199,70 @@ ping 192.168.1.2
 ```
 
 Let me know if you’d prefer using `netplan` YAML to make static routes persistent instead.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The file `/etc/networkd-dispatcher/routable.d/10-add-static-routes.sh` is likely a shell script used to **add static routes** when a network interface becomes **"routable"**—meaning it has a valid IP address and can reach the network.
+
+Here's a breakdown of what each part of this path and filename means:
+
+---
+
+### 📂 `/etc/networkd-dispatcher/`
+
+This is the configuration directory for **`networkd-dispatcher`**, a daemon that listens for events from `systemd-networkd` and runs scripts based on the **state** of network interfaces.
+
+---
+
+### 📁 `routable.d/`
+
+This subdirectory contains scripts that are executed when a network interface reaches the **"routable"** state, meaning it has a usable network configuration (e.g., IP address, routes, DNS).
+
+---
+
+### 📄 `10-add-static-routes.sh`
+
+This is a shell script that:
+
+* Is likely given a number prefix (`10-`) to control execution order relative to other scripts in the same directory.
+* Adds one or more **static routes** to the system routing table, presumably for specific networks or gateways.
+
+---
+
+### 🛠️ What the Script Might Do
+
+While I can't see the contents without you sharing them, it usually contains something like:
+
+```bash
+#!/bin/bash
+
+ip route add 192.168.100.0/24 via 192.168.1.1 dev eth0
+```
+
+This example adds a route to the 192.168.100.0/24 network via the gateway 192.168.1.1 on interface `eth0`.
+
+---
+
+### 📌 Summary
+
+* **Purpose**: Automatically configures static routes when an interface becomes network-ready.
+* **Triggered by**: `networkd-dispatcher` when an interface state changes to "routable".
+* **Location**: Follows the standard script-triggering structure of `networkd-dispatcher`.
+
+Would you like to share the contents of the script for a line-by-line explanation?

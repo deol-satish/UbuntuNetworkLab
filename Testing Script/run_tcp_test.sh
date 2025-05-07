@@ -43,8 +43,8 @@ ssh root@"$server_ipaddr" "sudo nohup tcpdump -i ens37 -w /home/ubuntu/pcap_serv
 # Wait for servers to start
 sleep 2
 echo "Start iperf3 Test"
-ssh root@"$client1_ipaddr" "cd /home/ubuntu/; iperf3 -c 192.168.3.2 -t $duration -p 5101 -J > iperf3_client_${tcp1}_${testname}.json" &
-ssh root@"$client2_ipaddr" "cd /home/ubuntu/; iperf3 -c 192.168.3.2 -t $duration -p 5102 -J > iperf3_client_${tcp2}_${testname}.json" &
+ssh root@"$client1_ipaddr" "cd /home/ubuntu/; iperf3 -c 192.168.2.2 -t $duration -p 5101 -J > iperf3_client_${tcp1}_${testname}.json" &
+ssh root@"$client2_ipaddr" "cd /home/ubuntu/; iperf3 -c 192.168.2.2 -t $duration -p 5102 -J > iperf3_client_${tcp2}_${testname}.json" &
 
 
 wait

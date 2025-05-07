@@ -55,3 +55,5 @@ ssh -p 2222 ubuntu@192.168.56.1
 
 sudo modprobe sch_dualpi2
 sudo modprobe tcp_prague
+
+sudo tc qdisc add dev ens33 root dualpi2
