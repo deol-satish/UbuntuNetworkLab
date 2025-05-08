@@ -1,0 +1,14 @@
+root@ubsrouter:~# tc -s qdisc show dev ens37
+qdisc netem 1: root refcnt 2 limit 1000
+ Sent 67438 bytes 709 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+qdisc tbf 2: parent 1: rate 8Mbit burst 4Kb lat 10ms
+ Sent 67438 bytes 709 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+qdisc dualpi2 3: parent 2:1 limit 10000p target 15ms tupdate 16ms alpha 0.156250 beta 3.195312 l4s_ect coupling_factor 2 drop_on_overload step_thresh 1ms drop_dequeue split_gso classic_protection 10%
+ Sent 67438 bytes 709 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+prob 0.000000 delay_c 0us delay_l 0us
+pkts_in_c 709 pkts_in_l 0 maxq 0
+ecn_mark 0 step_marks 0
+credit -121120 (L)

@@ -18,10 +18,14 @@ ssh root@"$client2_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkil
 ssh root@"$server_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_receiver;"
 
 
-ssh root@"$router_ipaddr" "rm -f *.json; rm *.pcap; rm *udp*.txt" 
+ssh root@"$router_ipaddr" "rm -f *.json; rm *.pcap; rm *udp*.txt; rm *dmesg*.txt" 
 ssh root@"$client1_ipaddr" "rm -f *.json; rm *.pcap; rm *udp*.txt"
 ssh root@"$client2_ipaddr" "rm -f *.json; rm *.pcap; rm *udp*.txt"
 ssh root@"$server_ipaddr" "rm -f *.json; rm *.pcap; rm *udp*.txt"
+
+# ssh root@"$router_ipaddr" "sudo dmesg -C"
+
+
 
 testname="iperf3_d${duration}"
 
@@ -38,7 +42,7 @@ ssh root@"$server_ipaddr" "stdbuf -oL ./udp_prague/udp_prague_receiver -p 5106 >
 
 
 echo "Start tcpdump on the server to capture traffic"
-ssh root@"$server_ipaddr" "sudo nohup tcpdump -i ens37 -w /home/ubuntu/pcap_server_${testname}.pcap > /dev/null 2>&1 &"
+ssh root@"$server_ipaddr" "sudo nohup tcpdump -i ens37 -w pcap_server_${testname}.pcap > /dev/null 2>&1 &"
 
 
 
@@ -47,7 +51,7 @@ sleep 2
 echo "Start iperf3 Test"
 # ssh root@"$client1_ipaddr" "iperf3 -c 192.168.2.2 -t $duration -p 5101 -J > iperf3_client_${tcp1}_${testname}.json" &
 ssh root@"$client2_ipaddr" "iperf3 -c 192.168.2.2 -t $duration -p 5102 -J > iperf3_client_${tcp2}_${testname}.json" &
-ssh root@"$client1_ipaddr" "./udp_prague/udp_prague_sender -a 192.168.2.2 -p 5106 -c > udp_prague_sender_${testname}.txt" &
+ssh root@"$client1_ipaddr" "stdbuf -oL ./udp_prague/udp_prague_sender -a 192.168.2.2 -p 5106 -c -b 20480 > udp_prague_sender_${testname}.txt" &
 
 
 echo "sending completed"
@@ -57,8 +61,6 @@ ssh root@"$router_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;"
 ssh root@"$client1_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_sender;"
 ssh root@"$client2_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_sender;"
 ssh root@"$server_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_receiver;"
-
-
 
 # SCP the generated files (JSON and PCAP) to the newly created folder on WSL
 
@@ -72,6 +74,8 @@ timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
 # Create main directory with timestamp
 base_dir="./data/udp_net_${timestamp}"
 mkdir -p "$base_dir"
+ssh root@"$router_ipaddr" "dmesg > "dmesg_${testname}_${timestamp}.txt"" 
+
 
 # Copy server-side JSON and PCAP files to the directory in WSL
 scp root@"$server_ipaddr":*.json "$base_dir"/
@@ -83,6 +87,7 @@ scp root@"$client1_ipaddr":*.json "$base_dir"/
 scp root@"$client2_ipaddr":*.json "$base_dir"/
 scp root@"$client1_ipaddr":*.txt "$base_dir"/
 scp root@"$client2_ipaddr":*.txt "$base_dir"/
+scp root@"$router_ipaddr":*dmesg*.txt "$base_dir"/
 
 echo "File transfer complete."
 

@@ -23,6 +23,14 @@ ssh root@"$client1_ipaddr" "cd /home/ubuntu/; rm *.json; rm *.pcap"
 ssh root@"$client2_ipaddr" "cd /home/ubuntu/; rm *.json; rm *.pcap"
 ssh root@"$server_ipaddr" "cd /home/ubuntu/; rm *.json; rm *.pcap"
 
+
+ssh root@"$router_ipaddr" "cd /home/ubuntu/; rm *.json; rm *.pcap; rm *dmesg*.txt" 
+ssh root@"$client1_ipaddr" "cd /home/ubuntu/;rm *.json; rm *.pcap;"
+ssh root@"$client2_ipaddr" "cd /home/ubuntu/;rm *.json; rm *.pcap;"
+ssh root@"$server_ipaddr" "cd /home/ubuntu/; rm *.json; rm *.pcap;"
+
+ssh root@"$router_ipaddr" "sudo dmesg -C"
+
 testname="iperf3_d${duration}"
 
 echo "Set TCP CC on clients"
@@ -62,6 +70,9 @@ timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
 base_dir="./data/net_${timestamp}"
 mkdir -p "$base_dir"
 
+ssh root@"$router_ipaddr" "dmesg > "dmesg_${testname}_${timestamp}.txt"" 
+
+
 # Copy server-side JSON and PCAP files to the directory in WSL
 scp root@"$server_ipaddr":/home/ubuntu/*.json "$base_dir"/
 scp root@"$server_ipaddr":/home/ubuntu/*.pcap "$base_dir"/
@@ -69,6 +80,7 @@ scp root@"$server_ipaddr":/home/ubuntu/*.pcap "$base_dir"/
 # Copy client-side JSON files to the directory in WSL
 scp root@"$client1_ipaddr":/home/ubuntu/*.json "$base_dir"/
 scp root@"$client2_ipaddr":/home/ubuntu/*.json "$base_dir"/
+scp root@"$router_ipaddr":*dmesg*.txt "$base_dir"/
 
 echo "File transfer complete."
 

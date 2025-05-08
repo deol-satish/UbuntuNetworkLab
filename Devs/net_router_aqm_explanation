@@ -1,0 +1,83 @@
+This series of commands uses **tc (Traffic Control)** in Linux to set up network traffic control on a device, specifically on `ens37` and `ens33` network interfaces. Let's break down each step to explain the configuration:
+
+---
+
+### 1. **Clear existing qdisc**
+
+```bash
+sudo tc qdisc del dev ens37 root
+```
+
+* **`tc qdisc del`**: This command deletes the existing **queue discipline (qdisc)** on the network interface `ens37` (which could have been configured previously).
+* **`dev ens37`**: Refers to the network device (`ens37`).
+* **`root`**: Indicates the top-level queue discipline, essentially clearing the main policy applied to `ens37`.
+
+### 2. **Add netem for 10ms delay**
+
+```bash
+sudo tc qdisc add dev ens37 root handle 1: netem delay 0ms
+```
+
+* **`tc qdisc add`**: This adds a new qdisc (queue discipline) to the `ens37` interface.
+* **`dev ens37`**: Specifies the network interface (`ens37`) where the qdisc is applied.
+* **`root handle 1:`**: Adds this qdisc as the root qdisc (the first level of traffic control) with the handle `1:`.
+* **`netem delay 0ms`**: The **`netem`** (network emulator) qdisc introduces network impairments. Here, it introduces a **delay of 0ms**, meaning there's no added delay in this case, though it's likely a placeholder for future modifications (e.g., simulating 10ms or more delay in the future).
+
+### 3. **Add TBF to limit bandwidth to 8Mbps**
+
+```bash
+sudo tc qdisc add dev ens37 parent 1: handle 2: tbf rate 8mbit burst 32kbit latency 10ms
+```
+
+* **`tc qdisc add`**: Adds a new qdisc to `ens37`.
+* **`dev ens37`**: Specifies the network interface.
+* **`parent 1:`**: The parent qdisc is the one defined in step 2 (`netem`), so this is a child of `1:`.
+* **`handle 2:`**: This new qdisc is given the handle `2:`.
+* **`tbf`**: The **Token Bucket Filter (TBF)** is a rate-limiting mechanism, controlling the traffic rate on the interface.
+* **`rate 8mbit`**: Limits the traffic rate to **8 Mbps**.
+* **`burst 32kbit`**: Defines the maximum burst size allowed (how much data can be transmitted in a short burst). Here, it's 32 kilobits.
+* **`latency 10ms`**: Specifies the maximum latency before data is transmitted, in this case, **10 milliseconds**.
+
+### 4. **Attach dualpi2 AQM under TBF**
+
+```bash
+sudo tc qdisc add dev ens37 parent 2:1 handle 3: dualpi2
+```
+
+* **`tc qdisc add`**: Adds a new qdisc to `ens37`.
+* **`dev ens37`**: Specifies the network interface.
+* **`parent 2:1`**: This indicates that the new qdisc is a child of the `TBF` qdisc (`2:`).
+* **`handle 3:`**: The new qdisc gets the handle `3:`.
+* **`dualpi2`**: This specifies the **DualPI2** Active Queue Management (AQM) algorithm. This is typically used for managing congestion and packet drops, helping to reduce bufferbloat and improve the overall performance of network traffic. **DualPI2** helps to maintain fairness and minimizes packet loss while controlling latency.
+
+### 5. **Attach dualpi2 AQM to ens33**
+
+```bash
+sudo tc qdisc add dev ens33 root dualpi2
+```
+
+* **`tc qdisc add`**: Adds a new qdisc to the network interface `ens33`.
+* **`dev ens33`**: Refers to the `ens33` network interface.
+* **`root`**: The new qdisc will be applied at the root level.
+* **`dualpi2`**: The same **DualPI2** AQM algorithm is applied to `ens33`.
+
+This step sets up **Active Queue Management (AQM)** on `ens33` to manage network traffic and reduce congestion, improving overall network quality.
+
+---
+
+### Summary
+
+These commands configure the following:
+
+1. **ens37 Interface**:
+
+   * Remove any existing traffic control settings.
+   * Add a **netem** delay of 0ms (no delay for now).
+   * Add a **Token Bucket Filter (TBF)** to limit the bandwidth to **8 Mbps** with burst handling and latency settings.
+   * Attach a **DualPI2 AQM** to the `TBF` for better congestion control and performance.
+
+2. **ens33 Interface**:
+
+   * Apply the **DualPI2 AQM** at the root level, likely for general traffic management and congestion control.
+
+This setup helps simulate network impairments, manage traffic bandwidth, and apply intelligent congestion control mechanisms for better network performance, particularly in scenarios like network testing or optimization.
