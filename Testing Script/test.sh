@@ -22,10 +22,10 @@ timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
 base_dir="./data/udp_net_${timestamp}"
 mkdir -p "$base_dir"
 
-ssh root@"$router_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;" 
-ssh root@"$client1_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_sender;"
-ssh root@"$client2_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_sender;"
-ssh root@"$server_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_receiver;"
+ssh root@"$router_ipaddr" "sudo killall iperf3;sudo killall tcpdump;" 
+ssh root@"$client1_ipaddr" "sudo killall iperf3;sudo killall tcpdump;sudo killall udp_prague_sender;"
+ssh root@"$client2_ipaddr" "sudo killall iperf3;sudo killall tcpdump;sudo killall udp_prague_sender;"
+ssh root@"$server_ipaddr" "sudo killall iperf3;sudo killall tcpdump;sudo killall udp_prague_receiver;"
 
 # Copy server-side JSON and PCAP files to the directory in WSL
 scp root@"$server_ipaddr":*.json "$base_dir"/

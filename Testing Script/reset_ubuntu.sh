@@ -12,10 +12,10 @@ source ../utils/settings.sh
 
 
 # Kill any running iperf3 instances
-ssh root@"$router_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;" 
-ssh root@"$client1_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_sender;"
-ssh root@"$client2_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_sender;"
-ssh root@"$server_ipaddr" "sudo pkill -f iperf3;sudo pkill -f tcpdump;sudo pkill -f udp_prague_receiver;"
+ssh root@"$router_ipaddr" "sudo killall iperf3;sudo killall tcpdump;" 
+ssh root@"$client1_ipaddr" "sudo killall iperf3;sudo killall tcpdump;sudo killall udp_prague_sender;"
+ssh root@"$client2_ipaddr" "sudo killall iperf3;sudo killall tcpdump;sudo killall udp_prague_sender;"
+ssh root@"$server_ipaddr" "sudo killall iperf3;sudo killall tcpdump;sudo killall udp_prague_receiver;"
 
 
 ssh root@"$router_ipaddr" "cd /home/ubuntu/Desktop; rm -f *.json; rm *.pcap" 

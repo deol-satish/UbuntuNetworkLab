@@ -12,10 +12,10 @@ source ../utils/settings.sh
 
 
 # Kill any running iperf3 instances
-ssh root@"$router_ipaddr" "sudo pkill -f iperf3" 
-ssh root@"$client1_ipaddr" "sudo pkill -f iperf3"
-ssh root@"$client2_ipaddr" "sudo pkill -f iperf3"
-ssh root@"$server_ipaddr" "sudo pkill -f iperf3"
+ssh root@"$router_ipaddr" "sudo killall iperf3" 
+ssh root@"$client1_ipaddr" "sudo killall iperf3"
+ssh root@"$client2_ipaddr" "sudo killall iperf3"
+ssh root@"$server_ipaddr" "sudo killall iperf3"
 
 
 ssh root@"$router_ipaddr" "cd /home/ubuntu/; rm *.json; rm *.pcap" 
@@ -36,6 +36,9 @@ testname="iperf3_d${duration}"
 echo "Set TCP CC on clients"
 ssh root@"$client1_ipaddr" "sudo sysctl -w net.ipv4.tcp_congestion_control=$tcp1"
 ssh root@"$client2_ipaddr" "sudo sysctl -w net.ipv4.tcp_congestion_control=$tcp2"
+
+ssh root@"$client1_ipaddr" "sudo sysctl -w net.ipv4.tcp_ecn=$tcp1_ecn"
+ssh root@"$client2_ipaddr" "sudo sysctl -w net.ipv4.tcp_ecn=$tcp2_ecn"
 
 echo "Starting iperf3 server instances"
 # ssh root@"$server_ipaddr" "nohup iperf3 -s -p 5101 > /dev/null 2>&1 &"
