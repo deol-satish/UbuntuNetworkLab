@@ -31,3 +31,5 @@ client1:
 client2:
 router:
 server:192.168.11.137
+
+in client1: add sudo ip route add 192.168.2.0/24 via 192.168.1.1 dev ens37

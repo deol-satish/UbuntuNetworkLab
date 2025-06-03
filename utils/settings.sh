@@ -25,7 +25,7 @@ sshkeypath="$HOME/.ssh/id_rsa"
 tcp1="prague"
 tcp2="cubic"
 
-tcp1_ecn = 1
-tcp2_ecn = 2
+tcp1_ecn="1"
+tcp2_ecn="2"
 
 duration=120

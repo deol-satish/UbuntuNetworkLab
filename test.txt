@@ -1,0 +1,49 @@
+# 1. Clear existing qdisc
+sudo tc qdisc del dev ens37 root
+
+# 2. Add HTB root qdisc
+sudo tc qdisc add dev ens37 root handle 1: htb default 10
+
+# 3. Create an HTB class to shape traffic at 1 Mbit/s
+sudo tc class add dev ens37 parent 1: classid 1:10 htb rate 20mbit ceil 20mbit
+
+# 4. Attach fq_codel as the leaf qdisc under the class
+sudo tc qdisc add dev ens37 parent 1:10 handle 100: fq_codel
+
+# 5. Apply a filter to match all traffic
+sudo tc filter add dev ens37 protocol ip parent 1:0 prio 1 u32 match ip dst 0.0.0.0/0 flowid 1:10
+
+
+
+
+
+
+
+
+
+
+
+# 1. Clear existing qdisc
+sudo tc qdisc del dev ens37 root
+
+# 2. Add HTB root qdisc
+sudo tc qdisc add dev ens37 root handle 1: htb default 10
+
+# 3. Create an HTB class to shape traffic at 1 Mbit/s
+sudo tc class add dev ens37 parent 1: classid 1:10 htb rate 5mbit ceil 5mbit
+
+# 4. Attach fq_codel as the leaf qdisc under the class
+sudo tc qdisc add dev ens37 parent 1:10 handle 100: fq_codel
+
+
+
+
+
+# Set up HTB for rate limiting
+tc qdisc add dev ens37 root handle 1: htb default 12
+
+# Add a class with rate limit (e.g., 1 Mbps)
+tc class add dev ens37 parent 1: classid 1:1 htb rate 1mbit
+
+# Use fq_codel to handle queuing and congestion management
+tc qdisc add dev ens37 parent 1:1 handle 10: fq_codel

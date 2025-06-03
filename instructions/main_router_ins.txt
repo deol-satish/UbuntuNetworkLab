@@ -1,0 +1,62 @@
+======================================================================================================================================
+======================================================================================================================================
+This to set delay of 15ms
+
+# 1. Clear existing qdisc
+sudo tc qdisc del dev ens37 root
+
+# 2. Add netem for 10ms delay
+sudo tc qdisc add dev ens37 root handle 1: netem delay 15ms
+
+# 3. Add TBF to limit bandwidth to 8Mbps
+sudo tc qdisc add dev ens37 parent 1: handle 2: tbf rate 150mbit burst 16kbit latency 100ms
+
+# 4. Attach dualpi2 AQM under TBF
+sudo tc qdisc add dev ens37 parent 2:1 handle 3: dualpi2
+
+======================================================================================================================================
+
+
+This to set rate limit of 150Mbit
+
+# 1. Clear existing qdisc
+sudo tc qdisc del dev ens38 root
+
+# 2. Add netem for 10ms delay
+sudo tc qdisc add dev ens38 root handle 1: netem delay 15ms
+
+# 3. Add TBF to limit bandwidth to 8Mbps
+sudo tc qdisc add dev ens38 parent 1: handle 2: tbf rate 150mbit burst 16kbit latency 100ms
+
+# 4. Attach dualpi2 AQM under TBF
+sudo tc qdisc add dev ens38 parent 2:1 handle 3: dualpi2
+
+======================================================================================================================================
+======================================================================================================================================
+======================================================================================================================================
+
+
+#This to set delay of 15ms
+
+# Delete existing qdisc
+sudo tc qdisc del dev ens37 root
+
+# Add netem with delay
+sudo tc qdisc add dev ens37 root handle 1: netem delay 5ms
+
+# Attach dualpi2 under netem
+sudo tc qdisc add dev ens37 parent 1:1 handle 2: dualpi2
+
+
+
+
+#This to set rate limit of 150Mbit
+
+# 1. Delete any existing qdisc
+sudo tc qdisc del dev ens38 root
+
+# 2. Add a Token Bucket Filter (TBF) to rate limit to 8 Mbps
+sudo tc qdisc add dev ens38 root handle 1: tbf rate 8mbit burst 16kbit latency 100ms
+
+# 3. Attach dualpi2 under TBF
+sudo tc qdisc add dev ens38 parent 1:1 handle 2: dualpi2
