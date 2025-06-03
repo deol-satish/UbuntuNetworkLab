@@ -36,6 +36,9 @@ ssh root@"$client2_ipaddr" "sudo sysctl -w net.ipv4.tcp_congestion_control=$tcp2
 ssh root@"$client1_ipaddr" "sudo sysctl -w net.ipv4.tcp_ecn=$tcp1_ecn"
 ssh root@"$client2_ipaddr" "sudo sysctl -w net.ipv4.tcp_ecn=$tcp2_ecn"
 
+ssh root@"$router_ipaddr" "sudo sysctl -w net.ipv4.tcp_ecn=1"
+ssh root@"$server_ipaddr" "sudo sysctl -w net.ipv4.tcp_ecn=1"
+
 echo "Starting iperf3 server instances"
 # ssh root@"$server_ipaddr" "nohup iperf3 -s -p 5101 > /dev/null 2>&1 &"
 # ssh root@"$server_ipaddr" "nohup iperf3 -s -p 5102 > /dev/null 2>&1 &"
