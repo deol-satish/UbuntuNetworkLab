@@ -53,6 +53,12 @@ ssh root@"$server_ipaddr" "sudo nohup tcpdump -i ens37 -w /home/ubuntu/pcap_serv
 
 # Wait for servers to start
 sleep 2
+# Run apply_tc_rules.sh in the background
+./apply_tc_rules.sh &
+tc_pid=$!
+echo "apply_tc_rules.sh is running in the background with PID $tc_pid"
+sleep 20
+
 echo "Start iperf3 Test"
 ssh root@"$client1_ipaddr" "cd /home/ubuntu/; iperf3 -c 192.168.2.2 -t $duration -p 5101 -J > iperf3_client_${tcp1}_${testname}.json" &
 ssh root@"$client2_ipaddr" "cd /home/ubuntu/; iperf3 -c 192.168.2.2 -t $duration -p 5102 -J > iperf3_client_${tcp2}_${testname}.json" &
@@ -86,6 +92,24 @@ scp root@"$client2_ipaddr":/home/ubuntu/*.json "$base_dir"/
 scp root@"$router_ipaddr":*dmesg*.txt "$base_dir"/
 
 echo "File transfer complete."
+
+# Define cleanup function
+cleanup() {
+    echo "Killing apply_tc_rules.sh with PID $tc_pid"
+    kill "$tc_pid" 2>/dev/null
+}
+
+# Register the cleanup function to run on script exit
+trap cleanup EXIT
+
+# Main script logic goes here
+# (e.g. sleep, or whatever task needs to be done)
+# Example:
+sleep 10
+
+echo "Main script work done."
+
+# When script exits (normally or via Ctrl+C), cleanup will be triggered
 
 # If successful
 echo "Test complete"

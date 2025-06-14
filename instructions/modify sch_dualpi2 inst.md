@@ -85,7 +85,12 @@ Then load your custom one:
 sudo insmod sch_dualpi2.ko
 ```
 
+
 ---
+
+sudo modprobe -r sch_dualpi2
+sudo insmod sch_dualpi2.ko
+
 
 #### **7. Check Kernel Log for Output**
 

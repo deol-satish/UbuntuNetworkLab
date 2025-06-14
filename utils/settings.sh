@@ -28,4 +28,4 @@ tcp2="cubic"
 tcp1_ecn="2"
 tcp2_ecn="1"
 
-duration=120
+duration=1800

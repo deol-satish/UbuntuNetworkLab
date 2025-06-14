@@ -2,6 +2,8 @@
 For Ubuntu VMware Network Editor to work - shutdown -r now 
 -> then copy paste network commmands right after the start
 ------------------------------------------------------------------------------------------
+# To Killall background Bash Scripts
+ps aux | grep '[b]ash' | grep -v $$ | awk '{print $2}' | xargs kill
 ------------------------------------------------------------------------------------------
 #Check available congestion control 
 sysctl net.ipv4.tcp_available_congestion_control

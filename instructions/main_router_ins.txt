@@ -42,7 +42,7 @@ sudo tc qdisc add dev ens38 parent 2:1 handle 3: dualpi2
 sudo tc qdisc del dev ens37 root
 
 # Add netem with delay
-sudo tc qdisc add dev ens37 root handle 1: netem delay 5ms
+sudo tc qdisc add dev ens37 root handle 1: netem delay 5ms loss 15%
 
 # Attach dualpi2 under netem
 sudo tc qdisc add dev ens37 parent 1:1 handle 2: dualpi2

@@ -55,9 +55,20 @@ ssh root@"$server_ipaddr" "sudo nohup tcpdump -i ens37 -w pcap_server_${testname
 # Wait for servers to start
 sleep 2
 echo "Start iperf3 Test"
+
+# Run apply_tc_rules.sh in the background
+# ./apply_tc_rules.sh &
+
+nohup ./apply_tc_rules.sh > output.txt 2>&1 < /dev/null &
+
+tc_pid=$!
+echo "apply_tc_rules.sh is running in the background with PID $tc_pid"
+sleep 20
+
 # ssh root@"$client1_ipaddr" "iperf3 -c 192.168.2.2 -t $duration -p 5101 -J > iperf3_client_${tcp1}_${testname}.json" &
 ssh root@"$client2_ipaddr" "iperf3 -c 192.168.2.2 -t $duration -p 5102 -J > iperf3_client_${tcp2}_${testname}.json" &
-ssh root@"$client1_ipaddr" "stdbuf -oL ./udp_prague/udp_prague_sender -a 192.168.2.2 -p 5106 -c -b 20480 > udp_prague_sender_${testname}.txt" &
+ssh root@"$client1_ipaddr" "stdbuf -oL ./udp_prague/udp_prague_sender -a 192.168.2.2 -p 5106 -c > udp_prague_sender_${testname}.txt" &
+# ssh root@"$client1_ipaddr" "stdbuf -oL ./udp_prague/udp_prague_sender -a 192.168.2.2 -p 5106 -c -b 20480 > udp_prague_sender_${testname}.txt" &
 
 
 echo "sending completed"
@@ -96,6 +107,25 @@ scp root@"$client2_ipaddr":*.txt "$base_dir"/
 scp root@"$router_ipaddr":*dmesg*.txt "$base_dir"/
 
 echo "File transfer complete."
+
+
+# Define cleanup function
+cleanup() {
+    echo "Killing apply_tc_rules.sh with PID $tc_pid"
+    kill "$tc_pid" 2>/dev/null
+}
+
+# Register the cleanup function to run on script exit
+trap cleanup EXIT
+
+# Main script logic goes here
+# (e.g. sleep, or whatever task needs to be done)
+# Example:
+sleep 10
+
+echo "Main script work done."
+
+# When script exits (normally or via Ctrl+C), cleanup will be triggered
 
 # If successful
 echo "Test complete"
