@@ -19,7 +19,6 @@ linestyles = ['-', '-', '-', '']                         # Add more linestyles a
 bar_width = 0.3
 
 figsize = (4,3)
-figsize = (8,6)
 
 title_req = False
 
